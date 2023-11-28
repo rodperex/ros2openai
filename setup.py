@@ -19,7 +19,9 @@ setup(
     license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={
-        'console_scripts': [
+    'console_scripts': [
+        'service = gptros2.service_member_function:main',
+        'client = gptros2.client_member_function:main',
         ],
     },
 )

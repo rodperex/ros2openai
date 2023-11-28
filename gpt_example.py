@@ -1,7 +1,6 @@
-# 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
 import openai
 
-openai.api_key = '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'
+openai.api_key = 'sk-'
 
 # prompt = "You are a poetic assistant, skilled in explaining complex programming concepts with creative flair"
 
@@ -18,4 +17,7 @@ completion = openai.chat.completions.create(
 )
 
 # Print the generated text
-print(completion.choices[0].message)
+print(completion.choices[0].message.role)
+print('----------')
+print(completion.choices[0].message.content)
+
