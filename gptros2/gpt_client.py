@@ -25,10 +25,11 @@ class GPTClient(Node):
 
 def main(args=None):
 
-    api_key = 'your-api-key'
+    api_key = 'YOUR_API_KEY'
     model = "gpt-3.5-turbo"
-    system_role = "You are a great mathematician"
-    message = "What is your favourite prime number?"
+    system_role = "You are my personal assistant"
+    # message = "What is your favourite prime number?"
+    message = input('Please enter a prompt: ')
     rclpy.init(args=args)
 
     minimal_client = GPTClient()
