@@ -20,8 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
     'console_scripts': [
-        'service = gptros2.service_member_function:main',
-        'client = gptros2.client_member_function:main',
+        'service = gptros2.gpt_service:main',
+        'client = gptros2.gpt_client:main',
         ],
     },
 )
