@@ -44,18 +44,11 @@ class GPTService(Node):
 
         openai.api_key = request.api_key
         conversation_history = self.load_historic(request.api_key)
-        # conversation_history = []
+
         try:
-            # completion = openai.chat.completions.create(
-            #     model=request.model,
-            #     messages=[
-            #     {"role": "system", "content": request.system_role},
-            #     {"role": "user", "content": request.prompt}
-            #     ]
-            # )
             
             conversation_history.append({"role": "user", "content": request.prompt})
-            # conversation_history.append({"role": "system", "content": request.system_role})
+
             completion = openai.chat.completions.create(
                 model=request.model,
                 messages=conversation_history
