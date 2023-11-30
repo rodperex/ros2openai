@@ -15,16 +15,18 @@ class GPTService(Node):
 
     def save_historic(self, api_key, conversation_history):
         file_path = 'src/gptros2/tmp/historic_' + api_key + '.json'
-        with open(file_path, 'a') as file:
-            json.dump(conversation_history, file)
+        with open(file_path, 'w') as file:
+            json.dump(conversation_history, file, indent=4)
     
     def load_historic(self, api_key):
         file_path = 'src/gptros2/tmp/historic_' + api_key + '.json'
         try:
             with open(file_path, 'r') as file:
-                return json.load(file)
+                historic = json.load(file)
+                return historic
         except (FileNotFoundError, json.JSONDecodeError):
-            return []
+            historic = []
+        return historic
 
     def clear_history_callback(self, request, response):
         try:
@@ -53,13 +55,14 @@ class GPTService(Node):
             # )
             
             conversation_history.append({"role": "user", "content": request.prompt})
-            conversation_history.append({"role": "system", "content": request.system_role})
+            # conversation_history.append({"role": "system", "content": request.system_role})
             completion = openai.chat.completions.create(
                 model=request.model,
                 messages=conversation_history
             )
             response.role = completion.choices[0].message.role
             response.message = completion.choices[0].message.content
+            conversation_history.append({"role": "system", "content": response.message})
             self.save_historic(request.api_key, conversation_history)
             
         except Exception as e:

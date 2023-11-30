@@ -1,4 +1,4 @@
-import sys
+import os
 import rclpy
 from gptros2_interfaces.srv import GPTPrompt
 from rclpy.node import Node
@@ -25,21 +25,30 @@ class GPTClient(Node):
 
 def main(args=None):
 
-    api_key = 'YOUR_API_KEY'
-    model = "gpt-3.5-turbo"
-    system_role = "You are my personal assistant"
-    # message = "What is your favourite prime number?"
-    message = input('Please enter a prompt: ')
-    rclpy.init(args=args)
+    api_key_ev = 'OPENAI_API_KEY'
 
-    minimal_client = GPTClient()
-    response = minimal_client.send_request(model, api_key, system_role, message)
-    minimal_client.get_logger().info(
-        'GPT response: %s' % response.message)
+    if api_key_ev in os.environ:
+        api_key = os.environ[api_key_ev]
+        model = "gpt-3.5-turbo"
+        system_role = "You are my personal assistant"
+        
+        
+        rclpy.init(args=args)
+        minimal_client = GPTClient()
+        minimal_client.get_logger().info(
+            'OPEN-AI API key: %s' % api_key)
+        
+        message = input('Please enter a prompt: ')
+        response = minimal_client.send_request(model, api_key, system_role, message)
+        
+        minimal_client.get_logger().info(
+            'GPT response: %s' % response.message)
 
-    minimal_client.destroy_node()
-    rclpy.shutdown()
+        minimal_client.destroy_node()
+        rclpy.shutdown()
+    else:
+        print(f'The environmental variable {api_key_ev} is not set.')
 
-
+    
 if __name__ == '__main__':
     main()
