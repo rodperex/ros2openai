@@ -22,11 +22,9 @@ class GPTService(Node):
         file_path = 'src/gptros2/tmp/historic_' + api_key + '.json'
         try:
             with open(file_path, 'r') as file:
-                historic = json.load(file)
-                return historic
+                return json.load(file)
         except (FileNotFoundError, json.JSONDecodeError):
-            historic = []
-        return historic
+            return []
 
     def clear_history_callback(self, request, response):
         try:
