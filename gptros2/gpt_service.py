@@ -39,7 +39,6 @@ class GPTService(Node):
             response.message = 'Clear history failed %r' % (e,)
         return response
     
-
     def gpt_prompt_callback(self, request, response):
 
         openai.api_key = request.api_key
