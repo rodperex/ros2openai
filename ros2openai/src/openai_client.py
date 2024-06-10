@@ -1,18 +1,18 @@
 import os
 import rclpy
-from gptros2_interfaces.srv import GPTPrompt
+from ros2openai_interfaces.srv import OpenAIPrompt
 from rclpy.node import Node
 
 
-class GPTClient(Node):
+class OpenAIClient(Node):
 
-    def __init__(self, service_name='gpt_prompt'):
+    def __init__(self, service_name='openai_prompt'):
         super().__init__(service_name)
-        super(GPTClient, self).__init__('gpt_client')
-        self.cli = self.create_client(GPTPrompt, service_name)
+        super(OpenAIClient, self).__init__('openai_client')
+        self.cli = self.create_client(OpenAIPrompt, service_name)
         while not self.cli.wait_for_service(timeout_sec=1.0):
             self.get_logger().info('service not available, waiting again...')
-        self.req = GPTPrompt.Request()
+        self.req = OpenAIPrompt.Request()
 
     def send_request(self, model, api_key, prompt):
         self.req.model = model
@@ -31,14 +31,14 @@ def main(args=None):
         rclpy.init(args=args)
         api_key = os.environ[api_key_ev]
         model = "gpt-3.5-turbo"   
-        service_name = 'gpt_prompt'                  
+        service_name = 'openai_prompt'                  
         
         message = input('Please enter a prompt: ')
         
         if message == 'clear':
-            service_name = 'gpt_clear'
+            service_name = 'openai_clear'
         
-        minimal_client = GPTClient(service_name)
+        minimal_client = OpenAIClient(service_name)
         minimal_client.get_logger().info(
             'OPEN-AI API key: %s' % api_key)
         
