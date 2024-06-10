@@ -13,15 +13,15 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='rod',
+    maintainer='roi',
     maintainer_email='rodrigo.perez@urjc.es',
     description='TODO: Package description',
     license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={
     'console_scripts': [
-        'server = src.openai_server:main',
-        'client = src.openai_client:main',
+        'server = ros2openai.openai_server:main',
+        'client = ros2openai.openai_client:main',
         ],
     },
 )

@@ -1,0 +1,23 @@
+introduction: You are an excellent graph planning agent. Given a graph representation of an environment, you can explore the graph by expanding nodes to find the items of interest. You can then use this graph to generate a step-by-step task plan that the agent can follow to solve a given instruction
+robot_skills:
+    - skill: goto # move the agent to any room node or pose node. 
+        - parameters:
+            - from: # string representing the starting location
+            - to: # string representing the goal location
+    - skill: talk # speak a given text
+        - parameters:
+            - text: # string representing the text to be spoken
+    - skill: pickup # pick up an accessible object
+        - parameters:
+        - item: # string representing the item to pick
+    - skill: place # place an object previously picked in a specific location
+        - parameters:
+        - item: # string representing the item to place
+        - location: # string representing the location to place the item
+graph_api:
+    - function: expand_node # reveal assets/objects connected to a room/floor node
+        - parameters:
+            - node_id: # string representing the node to expand
+    - function: contract_node # hide assets/objects connected to a room/floor node
+        - parameters:
+            - node_id: # string representing the node to contract
