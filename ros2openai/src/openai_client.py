@@ -33,7 +33,7 @@ def main(args=None):
         api_key = "lm-studio"
         # model = "gpt-3.5-turbo"
         model="QuantFactory/Meta-Llama-3-8B-Instruct-GGUF"   
-        service_name = 'openai_prompt'                  
+        service_name = 'openai_prompt'
         
         message = input('Please enter a prompt: ')
         
@@ -41,8 +41,6 @@ def main(args=None):
             service_name = 'openai_clear'
         
         minimal_client = OpenAIClient(service_name)
-        minimal_client.get_logger().info(
-            'OPEN-AI API key: %s' % api_key)
         
         response = minimal_client.send_request(model, api_key, message)
         

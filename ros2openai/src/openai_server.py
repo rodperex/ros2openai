@@ -16,11 +16,13 @@ class OpenAIService(Node):
         
     def save_historic(self, api_key, conversation_history):
         file_path = 'src/ros2openai/tmp/historic_' + api_key + '.json'
+        self.get_logger().debug('Saving conversation history to %s' % file_path)
         with open(file_path, 'w') as file:
             json.dump(conversation_history, file, indent=4)
     
     def load_historic(self, api_key):
         file_path = 'src/ros2openai/tmp/historic_' + api_key + '.json'
+        self.get_logger().debug('Loading conversation history from %s' % file_path)
         try:
             with open(file_path, 'r') as file:
                 return json.load(file)
@@ -39,12 +41,16 @@ class OpenAIService(Node):
         return response
     
     def openai_prompt_callback(self, request, response):
-        print('Received request')
+        self.get_logger().info('Incoming request')
         # openai.api_key = request.api_key
-        conversation_history = self.load_historic(request.api_key)
-        print('Loaded history')
-        print(conversation_history)
         self.client.api_key = request.api_key
+        self.get_logger().info('OPEN-AI API key: %s' % request.api_key)
+        self.get_logger().info('Model: %s' % request.model)
+        self.get_logger().info('Prompt: %s' % request.prompt)
+        self.get_logger().info('Loading conversation history...')
+        conversation_history = self.load_historic(request.api_key)
+        self.get_logger().debug('%s' % conversation_history)
+        
 
         try:
             
@@ -57,6 +63,8 @@ class OpenAIService(Node):
             response.role = completion.choices[0].message.role
             response.message = completion.choices[0].message.content
             conversation_history.append({"role": "system", "content": response.message})
+            self.get_logger().debug('Model response: %s' % response.message)
+            self.get_logger().info('Saving conversation history...')
             self.save_historic(request.api_key, conversation_history)
             
         except Exception as e:
