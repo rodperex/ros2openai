@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'gptros2'
+package_name = 'ros2openai'
 
 setup(
     name=package_name,
