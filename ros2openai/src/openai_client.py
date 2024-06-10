@@ -29,8 +29,10 @@ def main(args=None):
 
     if api_key_ev in os.environ:
         rclpy.init(args=args)
-        api_key = os.environ[api_key_ev]
-        model = "gpt-3.5-turbo"   
+        # api_key = os.environ[api_key_ev]
+        api_key = "lm-studio"
+        # model = "gpt-3.5-turbo"
+        model="QuantFactory/Meta-Llama-3-8B-Instruct-GGUF"   
         service_name = 'openai_prompt'                  
         
         message = input('Please enter a prompt: ')
@@ -45,7 +47,7 @@ def main(args=None):
         response = minimal_client.send_request(model, api_key, message)
         
         minimal_client.get_logger().info(
-            'GPT response: %s' % response.message)
+            'Model response: %s' % response.message)
 
         minimal_client.destroy_node()
         rclpy.shutdown()
@@ -55,3 +57,5 @@ def main(args=None):
     
 if __name__ == '__main__':
     main()
+
+    

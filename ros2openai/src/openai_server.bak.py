@@ -1,5 +1,5 @@
 import rclpy
-from openai import OpenAI
+import openai
 import json
 import os
 from ros2openai_interfaces.srv import OpenAIPrompt
@@ -12,8 +12,7 @@ class OpenAIService(Node):
         super().__init__('openai_service')
         self.srv = self.create_service(OpenAIPrompt, 'openai_prompt', self.openai_prompt_callback)
         self.clear_srv = self.create_service(OpenAIPrompt, 'openai_clear', self.clear_history_callback)
-        self.client = OpenAI(base_url="http://localhost:1234/v1")
-        
+
     def save_historic(self, api_key, conversation_history):
         file_path = 'src/ros2openai/tmp/historic_' + api_key + '.json'
         with open(file_path, 'w') as file:
@@ -39,18 +38,15 @@ class OpenAIService(Node):
         return response
     
     def openai_prompt_callback(self, request, response):
-        print('Received request')
-        # openai.api_key = request.api_key
+
+        openai.api_key = request.api_key
         conversation_history = self.load_historic(request.api_key)
-        print('Loaded history')
-        print(conversation_history)
-        self.client.api_key = request.api_key
 
         try:
             
             conversation_history.append({"role": "user", "content": request.prompt})
-            
-            completion = self.client.chat.completions.create(
+
+            completion = openai.chat.completions.create(
                 model=request.model,
                 messages=conversation_history
             )
