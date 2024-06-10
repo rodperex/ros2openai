@@ -9,7 +9,7 @@ from rclpy.node import Node
 class OpenAIService(Node):
 
     def __init__(self):
-        super().__init__('openai_service')
+        super().__init__('openai_server')
         self.srv = self.create_service(OpenAIPrompt, 'openai_prompt', self.openai_prompt_callback)
         self.clear_srv = self.create_service(OpenAIPrompt, 'openai_clear', self.clear_history_callback)
         self.client = OpenAI(base_url="http://localhost:1234/v1")
@@ -31,17 +31,19 @@ class OpenAIService(Node):
 
     def clear_history_callback(self, request, response):
         try:
+            self.get_logger().info('Incoming clear request')
             api_key = request.api_key
             file_path = 'src/ros2openai/tmp/historic_' + api_key + '.json'
             os.remove(file_path)  # Delete the conversation history file
             response.message = "History cleared successfully"
+            self.get_logger().info('History cleared successfully')
         except Exception as e:
             self.get_logger().info('Clear history failed %r' % (e,))
             response.message = 'Clear history failed %r' % (e,)
         return response
     
     def openai_prompt_callback(self, request, response):
-        self.get_logger().info('Incoming request')
+        self.get_logger().info('Incoming prompt request')
         # openai.api_key = request.api_key
         self.client.api_key = request.api_key
         self.get_logger().info('OPEN-AI API key: %s' % request.api_key)
