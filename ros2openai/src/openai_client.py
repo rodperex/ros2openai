@@ -34,18 +34,25 @@ def main(args=None):
         # model = "gpt-3.5-turbo"
         model="QuantFactory/Meta-Llama-3-8B-Instruct-GGUF"   
         service_name = 'openai_prompt'
-        
-        message = input('Please enter a prompt: ')
-        
-        if message == 'clear':
-            service_name = 'openai_clear'
-        
+
         minimal_client = OpenAIClient(service_name)
+        message = input('Please enter a prompt: ')
+        while message != 'exit':
+
+            response = minimal_client.send_request(model, api_key, message)
+            
+            minimal_client.get_logger().info(
+
+                'Model response: %s\n' % response.message)
+            message = input('Please enter a prompt: ')
         
-        response = minimal_client.send_request(model, api_key, message)
-        
-        minimal_client.get_logger().info(
-            'Model response: %s' % response.message)
+        clear = input('Clear history? (y/n): ')
+
+        if clear == 'y':
+            minimal_client.destroy_node()
+            minimal_client = OpenAIClient('openai_clear')
+            response = minimal_client.send_request(model, api_key, '')
+            minimal_client.get_logger().info(response.message)
 
         minimal_client.destroy_node()
         rclpy.shutdown()
