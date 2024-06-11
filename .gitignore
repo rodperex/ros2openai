@@ -1,2 +1,3 @@
 ros2openai/ros2openai/__pycache__/
+ros2openai/prompts/
 tmp/*
