@@ -21,7 +21,7 @@ setup(
     entry_points={
     'console_scripts': [
         'server = ros2openai.openai_server:main',
-        'client = ros2openai.openai_client:main',
+        'client_simple = ros2openai.openai_simple_client:main',
         ],
     },
 )

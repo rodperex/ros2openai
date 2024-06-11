@@ -1,3 +1,2 @@
-ros2openai/src/__pycache__/
-ros2openai/src/__init__.py
+ros2openai/ros2openai/__pycache__/
 tmp/*
