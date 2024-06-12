@@ -3,5 +3,6 @@ string api_key
 string system_role
 string prompt
 ---
+bool success
 string role
 string message

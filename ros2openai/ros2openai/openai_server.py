@@ -36,10 +36,12 @@ class OpenAIService(Node):
             file_path = 'src/ros2openai/tmp/historic_' + api_key + '.json'
             os.remove(file_path)  # Delete the conversation history file
             response.message = "History cleared successfully"
+            response.success = True
             self.get_logger().info('History cleared successfully')
         except Exception as e:
             self.get_logger().info('Clear history failed %r' % (e,))
             response.message = 'Clear history failed %r' % (e,)
+            response.success = False
         return response
     
     def openai_prompt_callback(self, request, response):
@@ -64,6 +66,7 @@ class OpenAIService(Node):
             )
             response.role = completion.choices[0].message.role
             response.message = completion.choices[0].message.content
+            response.success = True
             conversation_history.append({"role": "system", "content": response.message})
             self.get_logger().debug('Model response: %s' % response.message)
             self.get_logger().info('Saving conversation history...')
@@ -71,6 +74,7 @@ class OpenAIService(Node):
             
         except Exception as e:
             self.get_logger().info('Service call failed %r' % (e,))
+            response.success = False
             response.message = 'Service call failed %r' % (e,)
             response.role = ''
             
