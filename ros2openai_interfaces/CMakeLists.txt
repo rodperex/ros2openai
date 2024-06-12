@@ -8,6 +8,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CONFIG_PATH}")
 # find dependencies
 find_package(rosidl_default_generators REQUIRED)
 find_package(ament_cmake REQUIRED)
+find_package(builtin_interfaces REQUIRED)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -32,4 +33,5 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
+ament_export_dependencies(rosidl_default_runtime)
 ament_package()
